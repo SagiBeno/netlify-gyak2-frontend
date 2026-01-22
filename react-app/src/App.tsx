@@ -24,6 +24,7 @@ function App() {
   const handlePostClick = () => {
     fetch('/.netlify/functions/fruits', {
       method: 'POST',
+      headers: { 'Content-Type' : 'application/json' },
       body: JSON.stringify({id: 4, name: 'grape', healthy: true})
     })
   }
@@ -31,6 +32,7 @@ function App() {
   return (
     <>
       {
+      
         fruits.length > 0 &&
         <div className='card'>
           <table
@@ -49,11 +51,11 @@ function App() {
 
             <tbody>
               {
-                fruits.map( (fruit, idx) =>
+                fruits.map( ( {id, name, healthy}, idx) =>
                   <tr key={idx}>
-                    <td>{fruit?.id}</td>
-                    <td>{fruit?.name}</td>
-                    <td style={{color: 'green'}}>{fruit?.healthy ? '✔' : '❌'}</td>
+                    <td>{id}</td>
+                    <td>{name}</td>
+                    <td style={{color: 'green'}}>{healthy ? '✔' : '❌'}</td>
                   </tr>
                 )
               }
@@ -64,7 +66,7 @@ function App() {
 
       <div>
         <button type='button' onClick={handlePostClick}>
-          POST
+          POST /.netlify/functions/fruits
         </button>
       </div>
       

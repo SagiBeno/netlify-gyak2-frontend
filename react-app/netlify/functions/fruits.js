@@ -18,6 +18,7 @@ export const handler = async (event, context) => {
     }
 
     if (event.httpMethod == 'POST') {
+        console.log('body:', event.body);
         return {
             statusCode: 201,
         }
