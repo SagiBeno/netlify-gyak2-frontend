@@ -29,6 +29,7 @@ function App() {
 
   const handlePostClick = () => {
     const healthyBoolean: boolean = healthy === 'yes' ? true : false;
+    setFruitsName('');
 
     fetch('/.netlify/functions/fruits', {
       method: 'POST',
