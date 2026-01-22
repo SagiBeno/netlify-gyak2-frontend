@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
+// TODO
+interface Fruit {
+
+}
+
 function App() {
   const [fruits, setFruits] = useState([]);
 
