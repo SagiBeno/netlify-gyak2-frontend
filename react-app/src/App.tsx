@@ -25,14 +25,22 @@ function App() {
     fetch('/.netlify/functions/fruits', {
       method: 'POST',
       headers: { 'Content-Type' : 'application/json' },
-      body: JSON.stringify({id: 4, name: 'grape', healthy: true})
+      body: JSON.stringify({
+        //id: 4,
+        name: 'grape', 
+        healthy: true
+      })
     })
+      .then(res => res.json())
+      .then(result => {
+        console.log('POST result: ', result)
+      })
+      .catch(console.warn);
   }
 
   return (
     <>
       {
-      
         fruits.length > 0 &&
         <div className='card'>
           <table
