@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0);
   const [fruits, setFruits] = useState([]);
 
   useEffect( () => {
@@ -22,34 +19,55 @@ function App() {
     }
 
     componentDidMount();
-  }, [])
+  }, []);
+
+  const handlePostClick = () => {
+    fetch('/.netlify/functions/fruits', {
+      method: 'POST',
+      body: JSON.stringify({id: 4, name: 'grape', healthy: true})
+    })
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {
+        fruits.length > 0 &&
+        <div className='card'>
+          <table
+            style={{
+              margin: '0 auto',
+            }}
+            id='fruitTable'
+          >
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Healthy?</th>
+              </tr>
+            </thead>
 
-      <div className='card'>
-        {JSON.stringify(fruits)}
+            <tbody>
+              {
+                fruits.map( (fruit, idx) =>
+                  <tr key={idx}>
+                    <td>{fruit?.id}</td>
+                    <td>{fruit?.name}</td>
+                    <td style={{color: 'green'}}>{fruit?.healthy ? '✔' : '❌'}</td>
+                  </tr>
+                )
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      <div>
+        <button type='button' onClick={handlePostClick}>
+          POST
+        </button>
       </div>
+      
     </>
   )
 }
