@@ -1,29 +1,28 @@
-import { useEffect, useState } from 'react'
-import './App.css'
+import { useEffect, useState } from 'react';
+import './App.css';
 
-// TODO
 interface Fruit {
-
+  id?: number,
+  name: string,
+  healthy?: boolean
 }
 
 function App() {
-  const [fruits, setFruits] = useState([]);
-
-  const getFruits = async () => {
-    try {
-      const fruitsDataJson = await fetch('/.netlify/functions/fruits');
-      console.log('fruitsDataJson', fruitsDataJson);
-      const fruitsData = await fruitsDataJson.json();
-      console.log('fruitsData', fruitsData);
-      if (fruitsData) setFruits(fruitsData);
-    } catch (error) {
-      console.warn(error);
-    }
-
-  }
+  const [fruits, setFruits]: [Fruit[], Function] = useState([]);
 
   useEffect(() => {
-    getFruits();
+    const componentDidMounth = async () => {
+      try {
+        const fruitsDataJson = await fetch('/.netlify/functions/fruits');
+        console.log('fruitsDataJson', fruitsDataJson);
+        const fruitsData = await fruitsDataJson.json();
+        console.log('fruitsData', fruitsData);
+        if (fruitsData) setFruits(fruitsData);
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+    componentDidMounth();
   }, []);
 
   const handlePostClick = () => {
@@ -39,7 +38,7 @@ function App() {
       .then(res => res.json())
       .then(result => {
         console.log('POST result: ', result);
-        getFruits();
+        setFruits([...fruits, result[0]]);
       })
       .catch(console.warn);
   }
@@ -65,11 +64,11 @@ function App() {
 
             <tbody>
               {
-                fruits.map(({ id, name, healthy }, idx) =>
+                fruits.map((fruit: Fruit, idx) =>
                   <tr key={idx}>
-                    <td>{id}</td>
-                    <td>{name}</td>
-                    <td style={{ color: 'green' }}>{healthy ? '✔' : '❌'}</td>
+                    <td>{fruit.id}</td>
+                    <td>{fruit.name}</td>
+                    <td style={{ color: 'green' }}>{fruit.healthy ? '✔' : '❌'}</td>
                   </tr>
                 )
               }
