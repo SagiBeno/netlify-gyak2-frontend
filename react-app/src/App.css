@@ -44,3 +44,20 @@
 #fruitTable td {
   padding: 10px;
 }
+
+#fruitName {
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid oklch(70.4% 0.14 182.503);
+}
+
+#fruitName:focus {
+  outline: 1px solid oklch(68.5% 0.169 237.323);
+}
+
+#healthy {
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid oklch(70.4% 0.14 182.503);
+  background-color: inherit;
+}

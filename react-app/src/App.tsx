@@ -10,6 +10,7 @@ interface Fruit {
 function App() {
   const [fruits, setFruits]: [Fruit[], Function] = useState([]);
   const [fruitsName, setFruitsName]: [string, Function] = useState('');
+  const [healthy, setHealthy]: [string, Function] = useState('yes');
 
   useEffect(() => {
     const componentDidMounth = async () => {
@@ -27,13 +28,14 @@ function App() {
   }, []);
 
   const handlePostClick = () => {
+    const healthyBoolean: boolean = healthy === 'yes' ? true : false;
+
     fetch('/.netlify/functions/fruits', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        //id: 4,
-        name: 'grape',
-        healthy: true
+        name: fruitsName,
+        healthy: healthyBoolean
       })
     })
       .then(res => res.json())
@@ -79,19 +81,31 @@ function App() {
       }
 
       <div>
-        <label htmlFor="fruitName">Fruit name: </label>
-        <input type="text" name='fruitName' id='fruitName' value={fruitsName} onChange={(e) => setFruitsName(e.target.value)} placeholder='Fruit name....' />
-        <br />
-        <label htmlFor="healthy">Healthy:</label>
-
-        <select name="healthy" id="healthy">
-          <option value="false">No</option>
-          <option value="true">Yes</option>
-        </select>
-
-        <button type='button' onClick={handlePostClick}>
-          POST /.netlify/functions/fruits
-        </button>
+        <div>
+          <label htmlFor="fruitName">Fruit name: </label>
+          <input type="text" name='fruitName' id='fruitName' value={fruitsName} onChange={(e) => setFruitsName(e.target.value)} placeholder='Fruit name....' />
+        </div>
+        
+        <div style={{margin: '10px 0px'}}>
+          <label htmlFor="healthy">Healthy: </label>
+          <select name="healthy" id="healthy" value={healthy} onChange={(e) => setHealthy(e.target.value)}>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+       
+        {
+          fruitsName.length === 0 
+            ?
+              <button type='button' onClick={handlePostClick} disabled style={{cursor: 'not-allowed'}}>
+                POST /.netlify/functions/fruits
+              </button>
+            :
+              <button type='button' onClick={handlePostClick}>
+                POST /.netlify/functions/fruits
+              </button>
+        }
+        
       </div>
 
     </>
