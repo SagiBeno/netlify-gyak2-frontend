@@ -4,36 +4,37 @@ import './App.css'
 function App() {
   const [fruits, setFruits] = useState([]);
 
-  useEffect( () => {
-    const componentDidMount = async () => {
-      try {
-        const fruitsDataJson = await fetch('/.netlify/functions/fruits');
-        console.log('fruitsDataJson', fruitsDataJson);
-        const fruitsData = await fruitsDataJson.json();
-        console.log('fruitsData', fruitsData);
-        if (fruitsData) setFruits(fruitsData);
-      } catch (error) {
-        console.warn(error);
-      }
-      
+  const getFruits = async () => {
+    try {
+      const fruitsDataJson = await fetch('/.netlify/functions/fruits');
+      console.log('fruitsDataJson', fruitsDataJson);
+      const fruitsData = await fruitsDataJson.json();
+      console.log('fruitsData', fruitsData);
+      if (fruitsData) setFruits(fruitsData);
+    } catch (error) {
+      console.warn(error);
     }
 
-    componentDidMount();
+  }
+
+  useEffect(() => {
+    getFruits();
   }, []);
 
   const handlePostClick = () => {
     fetch('/.netlify/functions/fruits', {
       method: 'POST',
-      headers: { 'Content-Type' : 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         //id: 4,
-        name: 'grape', 
+        name: 'grape',
         healthy: true
       })
     })
       .then(res => res.json())
       .then(result => {
-        console.log('POST result: ', result)
+        console.log('POST result: ', result);
+        getFruits();
       })
       .catch(console.warn);
   }
@@ -59,11 +60,11 @@ function App() {
 
             <tbody>
               {
-                fruits.map( ( {id, name, healthy}, idx) =>
+                fruits.map(({ id, name, healthy }, idx) =>
                   <tr key={idx}>
                     <td>{id}</td>
                     <td>{name}</td>
-                    <td style={{color: 'green'}}>{healthy ? '✔' : '❌'}</td>
+                    <td style={{ color: 'green' }}>{healthy ? '✔' : '❌'}</td>
                   </tr>
                 )
               }
@@ -77,7 +78,7 @@ function App() {
           POST /.netlify/functions/fruits
         </button>
       </div>
-      
+
     </>
   )
 }
