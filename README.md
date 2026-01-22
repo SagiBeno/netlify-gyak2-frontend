@@ -1,0 +1,1 @@
+# netlify-gyak2-frontend
