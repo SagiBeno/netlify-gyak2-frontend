@@ -18,6 +18,9 @@ export const handler = async (event, context) => {
     }
 
     if (event.httpMethod == 'POST') {
+        console.log('body:', event.body);
+        const newFruit = JSON.parse(event.body);
+        console.log('newFruit', newFruit);
         return {
             statusCode: 201,
         }
