@@ -64,8 +64,8 @@ function App() {
 
             <tbody>
               {
-                fruits.map((fruit: Fruit, idx) =>
-                  <tr key={idx}>
+                fruits.map((fruit) =>
+                  <tr key={fruit.id}>
                     <td>{fruit.id}</td>
                     <td>{fruit.name}</td>
                     <td style={{ color: 'green' }}>{fruit.healthy ? '✔' : '❌'}</td>
